@@ -2,7 +2,7 @@ import React, { PureComponent } from "react";
 import { buy, sell } from "./redux/actions/orders";
 import { IState } from "./redux/types/store.types";
 import { connect } from "react-redux";
-import { fetchPrice } from "./redux/actions/prices";
+import { fetchCurrentQuote } from "./redux/actions/prices";
 
 class App extends PureComponent {
   render = () => {
@@ -10,10 +10,10 @@ class App extends PureComponent {
   };
 }
 
-const mapStateToProps = ({ orders, prices }: IState) => {
-  return { orders, prices };
+const mapStateToProps = ({ orders, quotes }: IState) => {
+  return { orders, quotes };
 };
 
-const mapDispatchToEvent = { buy, sell, fetchPrice };
+const mapDispatchToEvent = { buy, sell, fetchCurrentQuote };
 
 export default connect(mapStateToProps, mapDispatchToEvent)(App);

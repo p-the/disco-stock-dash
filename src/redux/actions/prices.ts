@@ -1,19 +1,22 @@
-import { IAction, UPDATE_PRICE } from "../types/actions.types";
-import { IPrice, IState, IOrder } from "../types/store.types";
+import { IAction, UPDATE_CURRENT_QUOTE } from "../types/actions.types";
+import { IQuote, IState, IOrder } from "../types/store.types";
 import { store } from "../store";
 import { config } from "../../config";
 
-export const updatePrice = (symbol: string, price: number): IAction<IPrice> => {
+export const updateCurrentQuote = (
+  symbol: string,
+  current: number
+): IAction<Partial<IQuote>> => {
   return {
-    type: UPDATE_PRICE,
+    type: UPDATE_CURRENT_QUOTE,
     payload: {
       symbol,
-      price
+      current
     }
   };
 };
 
-export const fetchPrice = (): any => {
+export const fetchCurrentQuote = (): any => {
   return (dispatch: any): any => {
     const socket = new WebSocket(`wss://ws.finnhub.io?token=${config.finnhub}`);
 
@@ -22,7 +25,7 @@ export const fetchPrice = (): any => {
       store.subscribe(() => {
         // TODO extract that shit
         const currentState: IState = store.getState();
-        if (currentState && currentState.prices) {
+        if (currentState && currentState.quotes) {
           currentState.orders.forEach((sym: IOrder) => {
             if (!sym.price.sell) {
               const isPresent = state.orders.find(
@@ -49,7 +52,7 @@ export const fetchPrice = (): any => {
       const data = JSON.parse(event.data);
       try {
         const { s, p } = data.data[0];
-        dispatch(updatePrice(s, p));
+        dispatch(updateCurrentQuote(s, p));
       } catch (e) {
         console.log(e);
       }

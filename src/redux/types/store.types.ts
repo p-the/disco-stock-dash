@@ -1,7 +1,7 @@
 export interface IState {
   app?: IApp;
   orders: IOrder[];
-  prices: IPrice[];
+  quotes: IQuote[];
 }
 
 export interface IApp {
@@ -20,9 +20,13 @@ export interface IOrder {
   date: IDate;
 }
 
-export interface IPrice {
+export interface IQuote {
   symbol: string;
-  price: number;
+  open: number;
+  high: number;
+  low: number;
+  current: number;
+  previousClose: number;
 }
 
 export interface IDate {

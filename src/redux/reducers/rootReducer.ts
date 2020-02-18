@@ -1,8 +1,8 @@
 import { orders } from "./orders";
-import { prices } from "./prices";
+import { quotes } from "./quotes";
 import { combineReducers } from "redux";
 
 export const rootReducer = combineReducers({
   orders,
-  prices
+  quotes
 });
