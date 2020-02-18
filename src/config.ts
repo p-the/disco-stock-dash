@@ -1,3 +1,4 @@
 export const config = {
-  finnhub: "bos92v7rh5r9pnm5r42g"
+  baseUrl: "https://finnhub.io/api/v1",
+  token: "bos92v7rh5r9pnm5r42g"
 };

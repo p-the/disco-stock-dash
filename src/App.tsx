@@ -1,19 +1,24 @@
-import React, { PureComponent } from "react";
-import { buy, sell } from "./redux/actions/orders";
+import React, { useEffect } from "react";
 import { IState } from "./redux/types/store.types";
-import { connect } from "react-redux";
-import { fetchCurrentQuote } from "./redux/actions/quotes";
+import { connect, useDispatch } from "react-redux";
+import { fetchQuote, fetchCurrentQuote } from "./redux/actions/quotes";
+import { store } from "./redux/store";
 
-class App extends PureComponent {
-  render = () => {
-    return <></>;
-  };
-}
+const App: React.FC = props => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchQuote("PYPL"));
+    dispatch(fetchCurrentQuote());
+  }, [dispatch]);
+
+  store.subscribe(() => console.log(store.getState()));
+
+  return <></>;
+};
 
 const mapStateToProps = ({ orders, quotes }: IState) => {
   return { orders, quotes };
 };
 
-const mapDispatchToEvent = { buy, sell, fetchCurrentQuote };
-
-export default connect(mapStateToProps, mapDispatchToEvent)(App);
+export default connect(mapStateToProps)(App);

@@ -40,7 +40,7 @@ export const updateCurrentQuote = (
 
 export const fetchCurrentQuote = (): any => {
   return (dispatch: any): any => {
-    const socket = new WebSocket(`wss://ws.finnhub.io?token=${config.finnhub}`);
+    const socket = new WebSocket(`wss://ws.finnhub.io?token=${config.token}`);
 
     socket.addEventListener("open", function(event) {
       let state: IState = store.getState();
@@ -79,5 +79,17 @@ export const fetchCurrentQuote = (): any => {
         console.log(e);
       }
     });
+  };
+};
+
+export const fetchQuote = (symbol: string): any => {
+  return (dispatch: any): any => {
+    fetch(`${config.baseUrl}/quote?symbol=${symbol}&token=${config.token}`)
+      .then(res => res.json())
+      .then(res => {
+        const { o, h, l, c, pc } = res;
+        dispatch(getQuote(symbol, o, h, l, c, pc));
+      })
+      .catch(e => console.log(e));
   };
 };
