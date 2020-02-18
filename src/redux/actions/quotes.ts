@@ -1,7 +1,29 @@
+import { GET_QUOTE } from "./../types/actions.types";
 import { IAction, UPDATE_CURRENT_QUOTE } from "../types/actions.types";
 import { IQuote, IState, IOrder } from "../types/store.types";
 import { store } from "../store";
 import { config } from "../../config";
+
+export const getQuote = (
+  symbol: string,
+  open: number,
+  high: number,
+  low: number,
+  current: number,
+  previousClose: number
+): IAction<IQuote> => {
+  return {
+    type: GET_QUOTE,
+    payload: {
+      symbol,
+      open,
+      high,
+      low,
+      current,
+      previousClose
+    }
+  };
+};
 
 export const updateCurrentQuote = (
   symbol: string,
