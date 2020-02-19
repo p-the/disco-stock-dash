@@ -1,0 +1,2 @@
+export const GET_QUOTE = "GET_QUOTE";
+export const UPDATE_CURRENT_QUOTE = "UPDATE_CURRENT_QUOTE";

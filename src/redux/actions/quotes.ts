@@ -1,8 +1,11 @@
-import { GET_QUOTE } from "./../types/actions.types";
-import { IAction, UPDATE_CURRENT_QUOTE } from "../types/actions.types";
-import { IQuote, IState, IOrder } from "../types/store.types";
+import { GET_QUOTE, UPDATE_CURRENT_QUOTE } from "./../constants/quotes";
 import { store } from "../store";
 import { config } from "../../../config";
+
+import IAction from "../types/actions";
+import { IState } from "../types/store";
+import { IQuote } from "../types/quotes";
+import { IOrder } from "../types/orders";
 
 export const getQuote = (
   symbol: string,
@@ -45,7 +48,6 @@ export const fetchCurrentQuote = (): any => {
     socket.addEventListener("open", function(event) {
       let state: IState = store.getState();
       store.subscribe(() => {
-        // TODO extract that shit
         const currentState: IState = store.getState();
         if (currentState && currentState.quotes) {
           currentState.orders.forEach((sym: IOrder) => {
@@ -70,13 +72,15 @@ export const fetchCurrentQuote = (): any => {
       });
     });
 
-    socket.addEventListener("message", function(event) {
-      const data = JSON.parse(event.data);
+    socket.addEventListener("message", function({ data }) {
+      const parsedData = JSON.parse(data);
       try {
-        const { s, p } = data.data[0];
-        dispatch(updateCurrentQuote(s, p));
+        if (parsedData && parsedData[0]) {
+          const { s, p } = parsedData[0];
+          dispatch(updateCurrentQuote(s, p));
+        }
       } catch (e) {
-        console.log(e);
+        console.log("fetchCurrentQuote", e);
       }
     });
   };
@@ -90,6 +94,6 @@ export const fetchQuote = (symbol: string): any => {
         const { o, h, l, c, pc } = res;
         dispatch(getQuote(symbol, o, h, l, c, pc));
       })
-      .catch(e => console.log(e));
+      .catch(e => console.log("fetchQuote", e));
   };
 };

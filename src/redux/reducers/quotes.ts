@@ -1,6 +1,7 @@
-import { GET_QUOTE } from "./../types/actions.types";
-import { IAction, UPDATE_CURRENT_QUOTE } from "../types/actions.types";
-import { IQuote } from "../types/store.types";
+import { GET_QUOTE, UPDATE_CURRENT_QUOTE } from "./../constants/quotes";
+import IAction from "../types/actions";
+import { IQuote } from "../types/quotes";
+
 export const quotes = (
   state: IQuote[] = [],
   { type, payload }: IAction<IQuote>

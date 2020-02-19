@@ -1,6 +1,6 @@
-import { BUY_ORDER, SELL_ORDER } from "../types/actions.types";
-import { IAction } from "./../types/actions.types";
-import { IOrder } from "../types/store.types";
+import IAction from "../types/actions";
+import { IOrder } from "../types/orders";
+import { BUY_ORDER, SELL_ORDER } from "../constants/orders";
 
 export const orders = (
   state: IOrder[] = [],

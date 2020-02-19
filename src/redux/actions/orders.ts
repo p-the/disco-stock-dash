@@ -1,28 +1,22 @@
-import { IOrder } from "../types/store.types";
-import { IAction, BUY_ORDER, SELL_ORDER } from "../types/actions.types";
+import { IOrder } from "../types/orders";
+import { BUY_ORDER, SELL_ORDER } from "../constants/orders";
+import IAction from "../types/actions";
+import { fetchQuote, fetchCurrentQuote } from "./quotes";
 
-export const buy = (
-  id: string,
-  symbol: string,
-  investment: number,
-  target: number,
-  price: number,
-  date: number
-): IAction<IOrder> => {
+export const addOrder = (order: IOrder): IAction<IOrder> => {
   return {
     type: BUY_ORDER,
     payload: {
-      id,
-      symbol,
-      investment,
-      target,
-      price: {
-        buy: price
-      },
-      date: {
-        buy: date
-      }
+      ...order
     }
+  };
+};
+
+export const buy = (order: IOrder) => {
+  return (dispatch: any) => {
+    dispatch(addOrder(order));
+    dispatch(fetchQuote(order.symbol));
+    dispatch(fetchCurrentQuote());
   };
 };
 
