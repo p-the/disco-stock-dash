@@ -2,7 +2,7 @@ import { GET_QUOTE } from "./../types/actions.types";
 import { IAction, UPDATE_CURRENT_QUOTE } from "../types/actions.types";
 import { IQuote, IState, IOrder } from "../types/store.types";
 import { store } from "../store";
-import { config } from "../../config";
+import { config } from "../../../config";
 
 export const getQuote = (
   symbol: string,
