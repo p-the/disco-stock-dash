@@ -1,30 +1,24 @@
 import { GET_QUOTE, UPDATE_CURRENT_QUOTE } from "./../constants/quotes";
 import { store } from "../store";
-import { config } from "../../../config";
+import { config } from "../../config";
 
 import IAction from "../types/actions";
 import { IState } from "../types/store";
 import { IQuote } from "../types/quotes";
 import { IOrder } from "../types/orders";
 
-export const getQuote = (
-  symbol: string,
-  open: number,
-  high: number,
-  low: number,
-  current: number,
-  previousClose: number
-): IAction<IQuote> => {
-  return {
-    type: GET_QUOTE,
-    payload: {
-      symbol,
-      open,
-      high,
-      low,
-      current,
-      previousClose
-    }
+export const getQuote = (symbol: string) => {
+  return (dispatch: any): any => {
+    fetch(`${config.baseUrl}/quote?symbol=${symbol}&token=${config.token}`)
+      .then(res => res.json())
+      .then(res => {
+        const { o, h, l, c, pc } = res;
+        dispatch({
+          type: GET_QUOTE,
+          payload: { symbol, o, h, l, c, pc }
+        });
+      })
+      .catch(e => console.log("fetchQuote", e));
   };
 };
 
@@ -83,17 +77,5 @@ export const fetchCurrentQuote = (): any => {
         console.log("fetchCurrentQuote", e);
       }
     });
-  };
-};
-
-export const fetchQuote = (symbol: string): any => {
-  return (dispatch: any): any => {
-    fetch(`${config.baseUrl}/quote?symbol=${symbol}&token=${config.token}`)
-      .then(res => res.json())
-      .then(res => {
-        const { o, h, l, c, pc } = res;
-        dispatch(getQuote(symbol, o, h, l, c, pc));
-      })
-      .catch(e => console.log("fetchQuote", e));
   };
 };

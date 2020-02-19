@@ -20,6 +20,6 @@
     "jsx": "react"
   },
   "include": [
-    "src", "config.ts"
+    "src", "src/config.ts"
   ]
 }
