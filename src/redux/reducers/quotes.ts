@@ -4,7 +4,7 @@ import { IQuote } from "../types/quotes";
 
 export const quotes = (
   state: IQuote[] = [],
-  { type, payload }: IAction<IQuote>
+  { type, payload }: IAction
 ) => {
   switch (type) {
     case GET_QUOTE:
@@ -28,15 +28,14 @@ export const quotes = (
           if (quote.symbol === payload.symbol) {
             return {
               ...quote,
-              price: payload.current
+              current: payload.current
             };
           }
           return quote;
         });
       } else {
-        return [...state, { symbol: payload.symbol, price: payload.current }];
+        return [...state, { symbol: payload.symbol, current: payload.current }];
       }
-
     default:
       return state;
   }

@@ -1,16 +1,17 @@
 import React, { useEffect } from "react";
 import { IState } from "./redux/types/store";
 import { connect, useDispatch } from "react-redux";
-import { store } from "./redux/store";
 import { buy } from "./redux/actions/orders";
+import Quote from "./components/Quote/Quote";
+import uuid from "uuid";
 
-const App: React.FC = props => {
+const App: React.FC<Partial<IState>> = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(
       buy({
-        symbol: "BINANCE:BTCUSDT",
+        symbol: "PYPL",
         id: "1",
         investment: 12981,
         target: 121,
@@ -20,13 +21,42 @@ const App: React.FC = props => {
     );
   }, [dispatch]);
 
-  store.subscribe(() => console.log(store.getState()));
+  const getOrders = () => {
+    return (
+      props.orders &&
+      props.orders.map(order => {
+        return (
+          <tr key={uuid()}>
+            <td>{order.symbol}</td>
+            <td>
+              <Quote symbol={order.symbol} />
+            </td>
+            <td>
+              <button>Click me</button>
+            </td>
+          </tr>
+        );
+      })
+    );
+  };
 
-  return <></>;
+  return (
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Current Quote</th>
+          </tr>
+        </thead>
+        <tbody>{getOrders()}</tbody>
+      </table>
+    </>
+  );
 };
 
-const mapStateToProps = ({ orders, quotes }: IState) => {
-  return { orders, quotes };
+const mapStateToProps = ({ orders }: IState) => {
+  return { orders };
 };
 
 export default connect(mapStateToProps)(App);
